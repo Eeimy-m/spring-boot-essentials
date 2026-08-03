@@ -60,4 +60,27 @@ public class ProdutoService {
         PRODUTOS.add(newProduct);
         return newProduct;
     }
+
+    public ProdutoEntity updateProduct(ProdutoDTO produtoDTO, Integer id) {
+        ProdutoEntity produto = PRODUTOS.stream()
+                .filter(p -> p.getId().equals(id))
+                .findFirst()
+                .orElseThrow(() -> new RuntimeException("Product not found"));
+
+        produto.setNome(produtoDTO.getNome());
+        produto.setDescricao(produtoDTO.getDescricao());
+        produto.setPreco(produtoDTO.getPreco());
+        produto.setQuantidade(produtoDTO.getQuantidade());
+
+        return produto;
+    }
+
+    public void deleteProduct(Integer id) {
+        ProdutoEntity produto = PRODUTOS.stream()
+                .filter(p -> p.getId().equals(id))
+                .findFirst()
+                .orElseThrow(() ->  new RuntimeException("Product not found"));
+
+        PRODUTOS.remove(produto);
+    }
 }

@@ -27,4 +27,17 @@ public class ProdutoController {
     public ProdutoEntity createProduto(@RequestBody ProdutoDTO produtoDTO){
         return produtoService.createProduct(produtoDTO);
     }
+
+    @PutMapping("/{id}")
+    @ResponseStatus(HttpStatus.CREATED)
+    public ProdutoEntity updateProduct(@PathVariable Integer id,
+                                       @RequestBody ProdutoDTO produtoDTO){
+        return produtoService.updateProduct(produtoDTO, id);
+    }
+
+    @DeleteMapping("/{id}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void deleteProduct(@PathVariable Integer id){
+        produtoService.deleteProduct(id);
+    }
 }

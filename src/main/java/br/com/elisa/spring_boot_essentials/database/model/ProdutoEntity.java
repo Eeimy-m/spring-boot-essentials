@@ -11,7 +11,7 @@ import java.math.BigDecimal;
 @ToString
 @Builder
 public class ProdutoEntity {
-    private int id;
+    private Integer id;
     private String nome;
     private String descricao;
     private BigDecimal preco;
