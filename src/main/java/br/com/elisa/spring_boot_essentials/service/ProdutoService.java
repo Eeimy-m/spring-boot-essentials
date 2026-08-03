@@ -1,7 +1,8 @@
 package br.com.elisa.spring_boot_essentials.service;
 
 import br.com.elisa.spring_boot_essentials.DTO.ProdutoDTO;
-import br.com.elisa.spring_boot_essentials.database.model.ProdutoEntity;
+import br.com.elisa.spring_boot_essentials.database.model.ProductEntity;
+import br.com.elisa.spring_boot_essentials.exception.ProductNotFoundException;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
@@ -10,10 +11,10 @@ import java.util.List;
 
 @Service
 public class ProdutoService {
-    private static final List<ProdutoEntity> PRODUTOS = new ArrayList<>();
+    private static final List<ProductEntity> PRODUCTS = new ArrayList<>();
 
     static {
-        PRODUTOS.add(ProdutoEntity.builder()
+        PRODUCTS.add(ProductEntity.builder()
                 .id(1)
                 .nome("Notebook")
                 .descricao("Galaxy Book 4, 64GB RAM, 458GB SSD")
@@ -21,7 +22,7 @@ public class ProdutoService {
                 .quantidade(50)
                 .build()
         );
-        PRODUTOS.add(ProdutoEntity.builder()
+        PRODUCTS.add(ProductEntity.builder()
                 .id(2)
                 .nome("Iphone")
                 .descricao("Iphone 17 Pro Max")
@@ -29,7 +30,7 @@ public class ProdutoService {
                 .quantidade(20)
                 .build()
         );
-        PRODUTOS.add(ProdutoEntity.builder()
+        PRODUCTS.add(ProductEntity.builder()
                 .id(3)
                 .nome("Mouse")
                 .descricao("Mouse")
@@ -39,17 +40,17 @@ public class ProdutoService {
         );
     }
 
-    public List<ProdutoEntity> findAll() {
-        return new ArrayList<>(PRODUTOS);
+    public List<ProductEntity> findAll() {
+        return new ArrayList<>(PRODUCTS);
     }
 
-    public ProdutoEntity createProduct(ProdutoDTO produtoDTO) {
-        int lastId = PRODUTOS.stream()
-                .mapToInt(ProdutoEntity::getId)
+    public ProductEntity createProduct(ProdutoDTO produtoDTO) {
+        int lastId = PRODUCTS.stream()
+                .mapToInt(ProductEntity::getId)
                 .max()
                 .orElse(0) + 1;
 
-        ProdutoEntity newProduct = ProdutoEntity.builder()
+        ProductEntity newProduct = ProductEntity.builder()
                 .id(lastId)
                 .nome(produtoDTO.getNome())
                 .descricao(produtoDTO.getDescricao())
@@ -57,15 +58,15 @@ public class ProdutoService {
                 .quantidade(produtoDTO.getQuantidade())
         .build();
 
-        PRODUTOS.add(newProduct);
+        PRODUCTS.add(newProduct);
         return newProduct;
     }
 
-    public ProdutoEntity updateProduct(ProdutoDTO produtoDTO, Integer id) {
-        ProdutoEntity produto = PRODUTOS.stream()
+    public ProductEntity updateProduct(ProdutoDTO produtoDTO, Integer id) {
+        ProductEntity produto = PRODUCTS.stream()
                 .filter(p -> p.getId().equals(id))
                 .findFirst()
-                .orElseThrow(() -> new RuntimeException("Product not found"));
+                .orElseThrow(() -> new ProductNotFoundException("Product not found"));
 
         produto.setNome(produtoDTO.getNome());
         produto.setDescricao(produtoDTO.getDescricao());
@@ -76,11 +77,11 @@ public class ProdutoService {
     }
 
     public void deleteProduct(Integer id) {
-        ProdutoEntity produto = PRODUTOS.stream()
+        ProductEntity produto = PRODUCTS.stream()
                 .filter(p -> p.getId().equals(id))
                 .findFirst()
-                .orElseThrow(() ->  new RuntimeException("Product not found"));
+                .orElseThrow(() ->  new ProductNotFoundException("Product not found!"));
 
-        PRODUTOS.remove(produto);
+        PRODUCTS.remove(produto);
     }
 }

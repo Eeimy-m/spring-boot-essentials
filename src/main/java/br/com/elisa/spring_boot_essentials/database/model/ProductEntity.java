@@ -10,7 +10,7 @@ import java.math.BigDecimal;
 @NoArgsConstructor
 @ToString
 @Builder
-public class ProdutoEntity {
+public class ProductEntity {
     private Integer id;
     private String nome;
     private String descricao;
